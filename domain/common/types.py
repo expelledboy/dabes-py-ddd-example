@@ -47,11 +47,6 @@ class ProductCode(Enum):
     gizmo: GizmoCode
 
 
-# /// A ProductCode is either a Widget or a Gizmo
-# type ProductCode =
-#     | Widget of WidgetCode
-#     | Gizmo of GizmoCode
-
 class UnitQuantity(int):
     pass
 
@@ -61,12 +56,8 @@ class KilogramQuantity(float):
 
 
 class OrderQuantity(str):
-    pass
-
-# /// A Quantity is either a Unit or a Kilogram
-# type OrderQuantity =
-#     | Unit of UnitQuantity
-#     | Kilogram of KilogramQuantity
+    unit: UnitQuantity
+    kilogram: KilogramQuantity
 
 
 class Price(float):
@@ -83,7 +74,7 @@ class BillingAmount(float):
 
 class PdfAttachment():
     Name: String50
-    Bytes: str[]
+    Bytes: list(str)
 
 
 class PromotionCode(str):

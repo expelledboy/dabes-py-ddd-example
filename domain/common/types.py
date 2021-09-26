@@ -1,10 +1,12 @@
-from pydantic import EmailStr
 from enum import Enum
+from typing import Union
 
+from pydantic import EmailStr, constr, conint, confloat
 
-# Constrained to be 50 chars or less, not null
-class String50(str):
-    pass
+from domain.abstract_model import AbstractModel
+from domain.common.constraints import Regex
+
+String50 = constr(max_length=50)
 
 
 class EmailAddress(String50):
@@ -17,65 +19,33 @@ class VipStatus(Enum):
     Vip = 2
 
 
-class ZipCode(str):
-    pass
+OrderId = constr(max_length=5, regex=Regex.ZIP_CODE.value)
+
+UsStateCode = constr(max_length=2)
+
+OrderId = constr(max_length=10, regex=Regex.ORDER_ID.value)
+
+# WidgetCode = type("WidgetCode", (constr(min_length=3, max_length=5),), {})
+WidgetCode = constr(min_length=3, max_length=5)
+
+GizmoCode = constr(min_length=6)
+
+ProductCode = Union[WidgetCode, GizmoCode]
+
+UnitQuantity = conint()
+
+KilogramQuantity = conint()
+
+OrderQuantity = Union[UnitQuantity, KilogramQuantity]
+
+Price = confloat()
+
+BillingAmount = confloat()
 
 
-class UsStateCode(str):
-    pass
-
-
-# An Id for Orders. Constrained to be a non-empty string < 10 chars
-class OrderId(str):
-    pass
-
-
-class OrderLineId(str):
-    pass
-
-
-class WidgetCode(str):
-    pass
-
-
-class GizmoCode(str):
-    pass
-
-
-class ProductCode(Enum):
-    widget: WidgetCode
-    gizmo: GizmoCode
-
-
-class UnitQuantity(int):
-    pass
-
-
-class KilogramQuantity(float):
-    pass
-
-
-class OrderQuantity(str):
-    unit: UnitQuantity
-    kilogram: KilogramQuantity
-
-
-class Price(float):
-    pass
-
-
-class BillingAmount(float):
-    pass
-
-
-class BillingAmount(float):
-    pass
-
-
-class PdfAttachment():
+class PdfAttachment(AbstractModel):
     Name: String50
-    Bytes: list(str)
+    Bytes: list[str]
 
 
-class PromotionCode(str):
-    pass
+PromotionCode = constr(max_length=20, regex=Regex.PROMO_CODE.value)

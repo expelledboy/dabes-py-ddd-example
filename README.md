@@ -1,2 +1,3 @@
-# dabes-py-ddd-example
-Moder DDD done right in Python
+# Dabes Python Domain Driven Development Example
+
+> Modern DDD in Python, done right!

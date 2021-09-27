@@ -1,1 +1,5 @@
+.idea/
+scratch/
 .venv
+*.pyc
+.coverage

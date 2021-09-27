@@ -7,6 +7,8 @@ authors = ["expelledboy <Anthony Jackson> <102334+expelledboy@users.noreply.gith
 [tool.poetry.dependencies]
 python = "^3.9"
 pydantic = {extras = ["email"], version = "^1.8.2"}
+pytest = "^6.2.5"
+pytest-cov = "^2.12.1"
 
 [tool.poetry.dev-dependencies]
 black = "^21.9b0"

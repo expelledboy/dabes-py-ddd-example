@@ -5,7 +5,7 @@ from dabes_py_ddd_example.domain.abstract_model import AbstractModel
 from pydantic import EmailStr, confloat, conint, constr
 
 from .constraints import Regex
-from .type_factory import create_type
+from .type_factory import create_type, create_union_type
 
 String50 = create_type("String50", constr(max_length=50))
 
@@ -27,7 +27,7 @@ WidgetCode = create_type("WidgetCode", constr(min_length=3, max_length=5))
 
 GizmoCode = create_type("GizmoCode", constr(min_length=6))
 
-ProductCode = Union[WidgetCode, GizmoCode]
+ProductCode = create_union_type("ProductCode", WidgetCode, GizmoCode)
 
 UnitQuantity = conint()
 

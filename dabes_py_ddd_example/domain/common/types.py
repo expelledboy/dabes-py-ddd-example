@@ -1,11 +1,14 @@
-from enum import Enum, IntEnum
+from enum import IntEnum
 from typing import Union
 
-from dabes_py_ddd_example.domain.abstract_model import AbstractModel
 from pydantic import EmailStr, confloat, conint, constr
 
-from .constraints import Regex
-from .type_factory import create_type, create_union_type
+from dabes_py_ddd_example.domain.abstract_model import AbstractModel
+from dabes_py_ddd_example.domain.common.constraints import Regex
+from dabes_py_ddd_example.domain.common.type_factory import (
+    create_type,
+    create_union_type,
+)
 
 String50 = create_type("String50", constr(max_length=50))
 
@@ -17,11 +20,11 @@ class VipStatus(IntEnum):
     Vip = 2
 
 
-OrderId = create_type("OrderId", constr(max_length=5, regex=Regex.ZIP_CODE.value))
+ZipCode = create_type("ZipCode", constr(min_length=5, max_length=10, regex=Regex.ZIP_CODE.value))
 
 UsStateCode = create_type("UsStateCode", constr(max_length=2))
 
-OrderId = create_type("OrderId", constr(max_length=10, regex=Regex.ORDER_ID.value))
+OrderId = create_type("OrderId", constr(max_length=50, regex=Regex.ORDER_ID.value))
 
 WidgetCode = create_type("WidgetCode", constr(min_length=3, max_length=5))
 

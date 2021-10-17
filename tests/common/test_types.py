@@ -1,7 +1,9 @@
 from contextlib import contextmanager
 from typing import ContextManager
 
-from attr import dataclass
+from pydantic import ValidationError
+from pytest import mark, raises
+
 from dabes_py_ddd_example.domain.common.types import (
     EmailAddress,
     GizmoCode,
@@ -9,8 +11,6 @@ from dabes_py_ddd_example.domain.common.types import (
     String50,
     WidgetCode,
 )
-from pydantic import ValidationError
-from pytest import mark, raises
 
 
 @contextmanager
@@ -27,7 +27,7 @@ def does_not_raise():
         (EmailAddress, "example@ecample.com", does_not_raise()),
     ],
 )
-def test_validation(type_, test_value, expectation: ContextManager):
+def test_validation(type_: type, test_value, expectation: ContextManager):
     with expectation:
         assert type_(test_value) == test_value
 
@@ -40,7 +40,7 @@ def test_validation(type_, test_value, expectation: ContextManager):
         (EmailAddress, "example@example.com", raises(ValidationError)),
     ],
 )
-def test_union_type(type_, value, expectation: ContextManager):
+def test_union_type(type_: type, value, expectation: ContextManager):
     with expectation:
         product_code = ProductCode(type_(value))
         assert isinstance(product_code, type_)

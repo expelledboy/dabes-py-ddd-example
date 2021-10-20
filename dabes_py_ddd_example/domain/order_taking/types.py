@@ -32,20 +32,19 @@ GizmoCode = create_type("GizmoCode", constr(min_length=6))
 
 ProductCode = create_union_type("ProductCode", WidgetCode, GizmoCode)
 
-UnitQuantity = conint()
+UnitQuantity = create_type("UnitQuantity", conint(gt=0, le=1000))
 
-KilogramQuantity = conint()
+KilogramQuantity = create_type("KilogramQuantity", confloat(gt=0.05, le=100))
 
-OrderQuantity = Union[UnitQuantity, KilogramQuantity]
+OrderQuantity = create_union_type("OrderQuantity", UnitQuantity, KilogramQuantity)
 
-Price = confloat()
+Price = create_type("Price", conint(gt=0, le=1000))
 
-BillingAmount = confloat()
+BillingAmount = create_type("BillingAmount", confloat(gt=0, le=10000))
 
 
 class PdfAttachment(AbstractModel):
-    Name: String50
-    Bytes: list[str]
+    name: String50
+    bytes: bytes
 
-
-PromotionCode = constr(max_length=20, regex=Regex.PROMO_CODE.value)
+PromotionCode = create_type("PromotionCode", constr(min_length=6, max_length=20, regex=Regex.PROMO_CODE.value))

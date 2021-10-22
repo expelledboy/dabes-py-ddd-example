@@ -1,22 +1,16 @@
-from contextlib import contextmanager
 from typing import ContextManager
 
 from pydantic import ValidationError
 from pytest import mark, raises
 
+from dabes_py_ddd_example.domain.common.errors import ConstructorCallNotAllowedError
 from dabes_py_ddd_example.domain.order_taking.types import (
     EmailAddress,
-    GizmoCode,
     PdfAttachment,
-    ProductCode,
     String50,
-    WidgetCode,
+    ProductCode,
 )
-
-
-@contextmanager
-def does_not_raise():
-    yield
+from tests.utils import does_not_raise
 
 
 @mark.parametrize(
@@ -33,27 +27,13 @@ def test_validation(type_: type, test_value, expectation: ContextManager):
         assert type_(test_value) == test_value
 
 
-@mark.parametrize(
-    ["type_", "value", "expectation"],
-    [
-        (WidgetCode, "abc1", does_not_raise()),
-        (GizmoCode, "abcd1234", does_not_raise()),
-        (EmailAddress, "example@example.com", raises(ValidationError)),
-    ],
-    ids=["widget", "gizmo", "invalid"]
-)
-def test_union_type(type_: type, value, expectation: ContextManager):
-    with expectation:
-        product_code = ProductCode(type_(value))
-        assert isinstance(product_code, type_)
-        assert isinstance(product_code, ProductCode)
+def test_product_code_constructor_not_allowed():
+    with raises(ConstructorCallNotAllowedError):
+        ProductCode("abc123")
 
 
 class TestPdfAttachment:
     def test_ok(self):
-        attachement = PdfAttachment(
-            name="Doc.pdf",
-            bytes=b"abc"
-        )
+        attachment = PdfAttachment(name="Doc.pdf", bytes=b"abc")
 
-        assert attachement
+        assert attachment
